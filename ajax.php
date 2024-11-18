@@ -303,6 +303,24 @@ if (isset($_POST['check_out_room'])) {
     echo json_encode($response);
 }
 
+if (isset($_POST['item_name'])) {
+    $item_name = $_POST['item_name'];
+    $item_type = $_POST['item_type'];
+    $quantity = $_POST['quantity'];
+    $price = $_POST['price'];
+
+    $query = "INSERT INTO inventory (item_name, item_type, quantity, price) VALUES ('$item_name', '$item_type', '$quantity', '$price')";
+    $result = mysqli_query($connection, $query);
+
+    if ($result) {
+        $response['done'] = true;
+        $response['data'] = 'Artículo agregado exitosamente';
+    } else {
+        $response['done'] = false;
+        $response['data'] = 'Error al agregar el artículo';
+    }
+    echo json_encode($response);
+}
 
 if (isset($_POST['room_type_id'])) {
     $room_type_id = $_POST['room_type_id'];

@@ -34,6 +34,9 @@ elseif (isset($_GET['complain'])){
 elseif (isset($_GET['statistics'])){
     include_once "statistics.php";
 }
+elseif (isset($_GET['inventory'])){ // Nueva condición para el inventario
+    include_once "inventory.php"; // Asegúrate de que este archivo exista
+}
 elseif (isset($_GET['emp_history'])){
     include_once "emp_history.php";
 }
