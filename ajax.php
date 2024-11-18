@@ -303,6 +303,20 @@ if (isset($_POST['check_out_room'])) {
     echo json_encode($response);
 }
 
+
+if (isset($_POST['room_type_id'])) {
+    $room_type_id = $_POST['room_type_id'];
+    $sql = "SELECT * FROM room WHERE room_type_id = '$room_type_id' AND status IS NULL AND deleteStatus = '0'";
+    $query = $connection->query($sql);
+
+    $options = '';
+    while ($row = $query->fetch_assoc()) {
+        $options .= '<option value="' . $row['room_id'] . '">' . $row['room_number'] . '</option>';
+    }
+    echo $options;
+}
+
+
 if (isset($_POST['add_employee'])) {
 
     $staff_type = $_POST['staff_type'];
