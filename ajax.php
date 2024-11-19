@@ -322,6 +322,61 @@ if (isset($_POST['item_name'])) {
     echo json_encode($response);
 }
 
+if (isset($_POST['delete_item']) && isset($_POST['item_id'])) {
+    $item_id = $_POST['item_id'];
+
+    $query = "DELETE FROM inventory WHERE id = '$item_id'";
+    $result = mysqli_query($connection, $query);
+
+    if ($result) {
+        $response['done'] = true;
+        $response['data'] = 'Artículo eliminado exitosamente';
+    } else {
+        $response['done'] = false;
+        $response['data'] = 'Error al eliminar el artículo';
+    }
+    echo json_encode($response);
+}
+if (isset($_POST['edit_item'])) {
+    $item_id = $_POST['item_id'];
+    $item_name = $_POST['item_name'];
+    $item_type = $_POST['item_type'];
+    $quantity = $_POST['quantity'];
+    $price = $_POST['price'];
+
+    // Actualizar el artículo en la base de datos
+    $query = "UPDATE inventory SET item_name = '$item_name', item_type = '$item_type', quantity = '$quantity', price = '$price' WHERE id = '$item_id'";
+    $result = mysqli_query($connection, $query);
+
+    if ($result) {
+        $response['done'] = true;
+        $response['data'] = 'Artículo actualizado exitosamente';
+    } else {
+        $response['done'] = false;
+        $response['data'] = 'Error al actualizar el artículo: ' . mysqli_error($connection); // Incluye el error de la base de datos
+    }
+
+    echo json_encode($response);
+}
+
+if (isset($_POST['delete_item'])) {
+    $item_id = $_POST['item_id'];
+
+    // Eliminar el artículo de la base de datos
+    $query = "DELETE FROM inventory WHERE id = '$item_id'";
+    $result = mysqli_query($connection, $query);
+
+    if ($result) {
+        $response['done'] = true;
+        $response['data'] = 'Artículo eliminado exitosamente';
+    } else {
+        $response['done'] = false;
+        $response['data'] = 'Error al eliminar el artículo: ' . mysqli_error($connection); // Incluye el error de la base de datos
+    }
+
+    echo json_encode($response);
+}
+
 if (isset($_POST['room_type_id'])) {
     $room_type_id = $_POST['room_type_id'];
     $sql = "SELECT * FROM room WHERE room_type_id = '$room_type_id' AND status IS NULL AND deleteStatus = '0'";

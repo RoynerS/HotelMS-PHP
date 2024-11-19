@@ -8,8 +8,7 @@
 <script src="js/foundation-datepicker.min.js"></script>
 <script src="js/validator.min.js"></script>
 <script src="js/custom.js"></script>
-<script src="ajax.js"></script>
-
+<script src="js/inventory.js"></script> <!-- Incluir el nuevo archivo aquí -->
 
 </body>
 </html>

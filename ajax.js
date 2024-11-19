@@ -24,6 +24,57 @@ $('#addRoom').submit(function () {
     return false;
 });
 
+$(document).ready(function() {
+    $('#updateQuantityForm').submit(function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario
+
+        var itemId = $('#edit_item_id').val();
+        var newQuantity = $('#new_quantity').val();
+
+        $.ajax({
+            type: 'POST',
+            url: 'ajax.php',
+            data: {
+                item_id: itemId,
+                new_quantity: newQuantity
+            },
+            success: function(response) {
+                var res = JSON.parse(response);
+                if (res.done) {
+                    // Actualizar la cantidad en la tabla
+                    document.getElementById('quantity-' + itemId).innerText = newQuantity;
+                    alert(res.data);
+                    $('#editQuantityModal').modal('hide'); // Cerrar el modal
+                } else {
+                    alert(res.data);
+                }
+            }
+        });
+    });
+});
+function deleteItem(itemId) {
+    if (confirm("¿Estás seguro de que deseas eliminar este artículo?")) {
+        $.ajax({
+            type: 'POST',
+            url: 'ajax.php',
+            data: {
+                delete_item: true,
+                item_id: itemId
+            },
+            success: function(response) {
+                var res = JSON.parse(response);
+                if (res.done) {
+                    alert(res.data);
+                    // Recargar la página o eliminar la fila de la tabla
+                    location.reload(); // Recargar la página
+                } else {
+                    alert(res.data);
+                }
+            }
+        });
+    }
+}
+
 $('#roomEditFrom').submit(function () {
     var room_type_id = $('#edit_room_type').val();
     var room_no = $('#edit_room_no').val();
