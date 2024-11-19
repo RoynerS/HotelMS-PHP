@@ -1,36 +1,35 @@
 // Función para abrir el modal de edición y llenar los campos con los datos del artículo
 function openEditModal(item) {
-    $('#edit_item_id').val(item.id);
-    $('#edit_item_name').val(item.item_name);
-    $('#edit_item_type').val(item.item_type);
-    $('#edit_quantity').val(item.quantity);
-    $('#edit_price').val(item.price);
+    $('#item_id').val(item.id); // Llenar el campo oculto con el ID del artículo
+    $('#item_name').val(item.item_name);
+    $('#item_type').val(item.item_type);
+    $('#quantity').val(item.quantity);
+    $('#price').val(item.price);
 
     // Mostrar el modal
     $('#editItemModal').modal('show');
 }
+// AJAX para manejar la actualización del artículo
+$('#updateInventoryItem').on('submit', function(e) {
+    e.preventDefault(); // Evitar el envío normal del formulario
 
-// AJAX para manejar la actualización del artículo
-// AJAX para manejar la actualización del artículo
-$('#editInventoryItem').on('submit', function(e) {
-    e.preventDefault(); // Prevenir el envío normal del formulario
+    console.log($(this).serialize()); // Verifica los datos que se están enviando
 
     $.ajax({
-        type: 'POST',
-        url: 'ajax.php', // URL del archivo que maneja la lógica
-        data: $(this).serialize() + '&edit_item=1', // Agregar un indicador de que es una actualización
+        type: "POST",
+        url: "ajax.php",
+        data: $(this).serialize(), // Serializa los datos del formulario
+        dataType: "json",
         success: function(response) {
-            // Manejar la respuesta del servidor
-            const res = JSON.parse(response);
-            if (res.done) {
-                alert(res.data); // Mostrar mensaje de éxito
-                location.reload(); // Recargar la página para ver los cambios
+            if (response.done) {
+                alert(response.data); // Muestra el mensaje de éxito
+                // Aquí puedes agregar lógica para actualizar la lista de artículos o cerrar el modal
             } else {
-                alert(res.data); // Mostrar mensaje de error
+                alert("Error: " + response.data); // Muestra un mensaje de error si la operación falla
             }
         },
-        error: function() {
-            alert('Error en la conexión con el servidor.'); // Mensaje de error en caso de fallo en la solicitud
+        error: function(xhr, status, error) {
+            alert("Ocurrió un error: " + error); // Manejo de errores de la solicitud AJAX
         }
     });
 });
